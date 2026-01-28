@@ -46,11 +46,11 @@ spec:
         defaultBranch: main
 
     - id: register
-      name: Register in Catalog
+      name: Register 
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
-        catalogInfoPath: './template/catalog-info.yaml'
+        catalogInfoPath: '/catalog-info.yaml'
 
   # 3. Final display links
   output:
