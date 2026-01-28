@@ -1,62 +1,56 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: URLshortener
+  name: urlshortener
   title: URL Shortener Service
   description: A basic template to bootstrap a URL shortener service.
 spec:
-  owner: development
+  owner: group:default/development
   type: service
 
-  # 1. Inputs from the user (Simplified)
   parameters:
     - title: Provide App Information
       required:
         - name
-        - owner
+        - githubOwner
       properties:
         name:
-          title: Name
+          title: Service Name
           type: string
-          description: Name of your new Node service (This will also be the GitHub Repo name)
-        owner:
-          title: GitHub Organization/Owner
+          description: Name of your new service (also the GitHub repo name)
+        githubOwner:
+          title: GitHub Organization or User
           type: string
-          description: Which GitHub Org or User should own this repository?
-          # Note: If this is a hardcoded Org, you can remove this field and hardcode it below.
+          description: GitHub org or user that will own the repository
 
-  # 2. Actions to perform
   steps:
-    - id: template
+    - id: fetch
       name: Fetch Skeleton
       action: fetch:template
       input:
-        url: ./template 
+        url: ./template
         values:
           name: ${{ parameters.name }}
-          owner: ${{ parameters.owner }}
 
     - id: publish
       name: Publish to GitHub
       action: publish:github
       input:
-        # Constructing the URL: github.com?owner=USER&repo=APP_NAME
-        repoUrl: "github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}"
-        description: "URLshortenerNode.js service: ${{ parameters.name }}"
+        repoUrl: github.com?owner=${{ parameters.githubOwner }}&repo=${{ parameters.name }}
+        description: URL shortener service - ${{ parameters.name }}
         defaultBranch: main
 
     - id: register
-      name: Register 
+      name: Register in Catalog
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
-        catalogInfoPath: 'catalog-info.yaml'
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: catalog-info.yaml
 
-  # 3. Final display links
   output:
     links:
       - title: Repository
-        url: ${{ steps['publish'].output.remoteUrl }}
+        url: ${{ steps.publish.output.remoteUrl }}
       - title: Open in Catalog
         icon: catalog
-        entityRef: ${{ steps['register'].output.entityRef }}
+        entityRef: ${{ steps.register.output.entityRef }}

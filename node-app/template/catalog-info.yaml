@@ -1,14 +1,11 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: ${{values.name}}
-  description: application to shorten the long URL
-  # Example for optional annotations
+  name: ${{ values.name }}
+  description: Application to shorten long URLs
   annotations:
-    github.com/project-slug: rohitratannagar/${{values.name}}
-    
-  #   backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: rohitratannagar/${{ values.name }}
 spec:
   type: service
-  owner: development
   lifecycle: production
+  owner: group:default/development
