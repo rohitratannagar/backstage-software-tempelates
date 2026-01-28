@@ -36,6 +36,7 @@ spec:
       name: Publish to GitHub
       action: publish:github
       input:
+        # This creates the repo. The output 'remoteUrl' will be used in the next step.
         repoUrl: github.com?owner=${{ parameters.githubOwner }}&repo=${{ parameters.name }}
         description: URL shortener service - ${{ parameters.name }}
         defaultBranch: main
@@ -44,10 +45,10 @@ spec:
       name: Register in Catalog
       action: catalog:register
       input:
-        repoUrl: https://github.com/${{ parameters.githubOwner }}/${{ parameters.name }}
-        branch: main
-        catalogInfoPath: catalog-info.yaml
-
+        # FIX: Changed from repoUrl to repoContentsUrl 
+        # We use the output from the 'publish' step to ensure the repo is ready.
+        repoContentsUrl: ${{ steps.publish.output.remoteUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
 
   output:
     links:
