@@ -1,0 +1,2 @@
+Hello, This is a test file
+The app's name is: ${{value.name}}

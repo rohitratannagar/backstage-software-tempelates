@@ -8,7 +8,7 @@ spec:
   owner: development
   type: service
 
-  # 1. Inputs from the user
+  # 1. Inputs from the user (Simplified)
   parameters:
     - title: Provide App Information
       required:
@@ -18,27 +18,12 @@ spec:
         name:
           title: Name
           type: string
-          description: Name of your new Node service
+          description: Name of your new Node service (This will also be the GitHub Repo name)
         owner:
-          title: Owner
+          title: GitHub Organization/Owner
           type: string
-          description: Which group owns this service?
-          ui:field: OwnerPicker
-          ui:options:
-            catalogFilter:
-              kind: Group
-
-    - title: Choose Repository Location
-      required:
-        - repoUrl
-      properties:
-        repoUrl:
-          title: Repository Location
-          type: string
-          ui:field: RepoUrlPicker
-          ui:options:
-            allowedHosts:
-              - github.com
+          description: Which GitHub Org or User should own this repository?
+          # Note: If this is a hardcoded Org, you can remove this field and hardcode it below.
 
   # 2. Actions to perform
   steps:
@@ -46,7 +31,7 @@ spec:
       name: Fetch Skeleton
       action: fetch:template
       input:
-        url: ./skeleton  # Relative path to your Node.js boilerplate code
+        url: ./template 
         values:
           name: ${{ parameters.name }}
           owner: ${{ parameters.owner }}
@@ -55,7 +40,8 @@ spec:
       name: Publish to GitHub
       action: publish:github
       input:
-        repoUrl: ${{ parameters.repoUrl }}
+        # Constructing the URL: github.com?owner=USER&repo=APP_NAME
+        repoUrl: "github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}"
         description: "URLshortenerNode.js service: ${{ parameters.name }}"
         defaultBranch: main
 
@@ -63,14 +49,14 @@ spec:
       name: Register in Catalog
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
         catalogInfoPath: '/catalog-info.yaml'
 
   # 3. Final display links
   output:
     links:
       - title: Repository
-        url: ${{ steps.publish.output.remoteUrl }}
+        url: ${{ steps['publish'].output.remoteUrl }}
       - title: Open in Catalog
         icon: catalog
-        entityRef: ${{ steps.register.output.entityRef }}
+        entityRef: ${{ steps['register'].output.entityRef }}

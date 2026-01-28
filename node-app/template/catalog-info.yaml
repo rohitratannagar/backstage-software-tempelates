@@ -1,0 +1,19 @@
+apiVersion: backstage.io/v1alpha1
+kind: Template
+metadata:
+  name: ${{values.name}}
+  description: application to shorten the long URL
+  # Example for optional annotations
+  annotations:
+    github.com/project-slug: rohitratannagar/${{values.name}}
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://urlshortener-7jh1.onrender.com/
+      title: Live Website
+      icon: website
+    
+  #   backstage.io/techdocs-ref: dir:.
+spec:
+  type: website
+  owner: user:rohitratannagar
+  lifecycle: production
