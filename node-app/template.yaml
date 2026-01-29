@@ -46,7 +46,7 @@ spec:
       action: catalog:register
       input:
         repoContentsUrl: https://github.com/${{ parameters.githubOwner }}/${{ parameters.name }}
-        catalogInfoPath: backstage-software-templates/template/catalog-info.yaml
+        catalogInfoPath: backstage-software-templates/tree/main/node-app/template/catalog-info.yaml
 
 
   output:
