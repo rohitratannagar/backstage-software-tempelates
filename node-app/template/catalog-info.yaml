@@ -4,7 +4,7 @@ metadata:
   name: ${{ values.name }}
   description: Application to shorten long URLs
   annotations:
-    github.com/project-slug: https://github.com/rohitratannagar/${{ values.name }}
+    github.com/project-slug: https://github.com/rohitratannagar/blob/main/${{ values.name }}
 spec:
   type: service
   lifecycle: production
