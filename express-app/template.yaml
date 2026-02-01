@@ -9,7 +9,7 @@ metadata:
     - react
     - fullstack
 spec:
-  owner: platform-team
+  owner: development
   type: service
 
   parameters:
