@@ -5,7 +5,7 @@ metadata:
   title: URL Shortener Service
   description: A basic template to bootstrap a URL shortener service.
 spec:
-  owner: group:default/development
+  owner: rohitratannagar
   type: service
 
   parameters:
